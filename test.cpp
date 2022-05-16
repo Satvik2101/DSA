@@ -1,28 +1,49 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-class Foo {
-  public:
-    int val;
-    Foo(int v) : val(v) {}
-    void x() { delete this; }
-};
-class Bar {
-  public:
-    int val;
-    int val2;
-    int val3;
-    int val4;
-    Bar(int v) : val(v), val2(v) {}
-    void x() { delete this; }
-};
-
+#define ll long long
 int main() {
-    Foo *f = new Foo(3);
-    cout << f->val << " ";
-    f->x();
-    cout << f << " ";
-    int *f2 = new int[30];
-    f = new Foo(3);
-    // f->x();
-    cout << f2 << " " << f << " ";
+    ll int t;
+    cin >> t;
+    while (t--) {
+        ll int width, height;
+        cin >> width >> height;
+        ll int n;
+        cin >> n;
+        ll int xCoordinates[n];
+        ll int yCoordinates[n];
+        for (ll int i = 0; i < n; i++) {
+            cin >> xCoordinates[i];
+            cin >> yCoordinates[i];
+        }
+        ll int maxXDiff = 0;
+        ll int maxYDiff = 0;
+        sort(xCoordinates, xCoordinates + n);
+        sort(yCoordinates, yCoordinates + n);
+        for (ll int i = 0; i < n; i++) {
+            if (i == 0) {
+                if (xCoordinates[i] - 1 > maxXDiff) {
+                    maxXDiff = xCoordinates[i] - 1;
+                }
+                if (yCoordinates[i] - 1 > maxYDiff) {
+                    maxYDiff = yCoordinates[i] - 1;
+                }
+                continue;
+            }
+
+            if (xCoordinates[i] - xCoordinates[i - 1] - 1 > maxXDiff) {
+                maxXDiff = xCoordinates[i] - xCoordinates[i - 1] - 1;
+            }
+            if (yCoordinates[i] - yCoordinates[i - 1] - 1 > maxYDiff) {
+                maxYDiff = yCoordinates[i] - yCoordinates[i - 1] - 1;
+            }
+        }
+        if (width - xCoordinates[n - 1] > maxXDiff) {
+            maxXDiff = width - xCoordinates[n - 1];
+        }
+        if (height - yCoordinates[n - 1] > maxYDiff) {
+            maxYDiff = height - yCoordinates[n - 1];
+        }
+        cout << (maxXDiff) * (maxYDiff) << endl;
+    }
+    return 0;
 }
