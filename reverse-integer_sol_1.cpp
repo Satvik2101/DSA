@@ -1,0 +1,22 @@
+#include <bits/stdc++.h>
+// kbx2157
+using namespace std;
+// https://leetcode.com/problems/reverse-integer
+
+
+class Solution {
+public:
+    int reverse(int x) {
+    int rev = 0;
+    while (x)
+    {   if (rev>0&&rev>(INT_MAX-x%10)/10)
+            return 0;
+        if (rev<0 && rev<(INT_MIN-x%10)/10)
+            return 0;
+        rev = rev * 10 + x % 10;
+        x /= 10;
+    }
+    return rev;
+        
+    }
+};
