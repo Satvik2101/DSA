@@ -1,39 +1,62 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
-#include <algorithm>
+#include <string>
 
 // kbx2157
 using namespace std;
+class Solution {
+  public:
+    // unordered_multiset<char> characters;
+    int count[26];
+    vector<string> ans;
 
-bool comp(vector<int> &a, vector<int> &b) { return a[1] < b[1]; }
-int solve(vector<vector<int>> &intervals) {
-    int ans = 0;
-    if (intervals.size() == 0)
-        return 0;
-    sort(intervals.begin(), intervals.end(), comp); // custom comperator is
-                                                    // used.
-    vector<int> prev = intervals[0];
+    void dfs(string current) {
+        // cout << current << endl;
+        bool end = true;
+        for (int i = 0; i < 26; i++) {
 
-    for (vector<int> i : intervals) {
-        if (i == intervals[0])
-            continue;
-        if (prev[1] > i[0]) {
-            ans++; // we dont update previous, because i[1] will be grater then
-                   // prev[1]
-            cout << prev[0] << " " << prev[1] << " " << i[0] << " " << i[1]
-                 << endl;
-        } else
-            prev = i; // we want the end point to be minimum
+            if (count[i] > 0) {
+                end = false;
+                char c = i + 'A';
+                // cout << c << " ";
+                current += c;
+                count[i]--;
+
+                dfs(current);
+                count[i]++;
+                current.pop_back();
+            }
+        }
+        if (end)
+            ans.push_back(current);
     }
-    return ans;
-}
 
+    vector<string> find_permutation(string S) {
+        //  characters = unordered_multiset<char>(S.begin(),S.end());
+        for (int i = 0; i < 26; i++) {
+            count[i] = 0;
+        }
+        for (int i = 0; i < S.length(); i++) {
+            if (S[i] >= 'A' && S[i] <= 'Z') {
+                count[S[i] - 'A']++;
+            } else {
+                count[S[i] - 'a']++;
+            }
+        }
+        for (int i = 0; i < 26; i++)
+            cout << count[i] << " ";
+        string curr = "";
+        dfs(curr);
+        return ans;
+        // Code here there
+    }
+};
 int main() {
 
-    vector<vector<int>> v = {
-        {1, 18}, {18, 23}, {15, 29}, {4, 15}, {2, 11}, {5, 13},
-    };
-    cout << solve(v);
+    Solution sol;
+    vector<string> ans = sol.find_permutation("BBA");
+    for (int i = 0; i < ans.size(); i++)
+        cout << ans[i] << " ";
     return 0;
 }
